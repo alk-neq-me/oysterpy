@@ -1,0 +1,11 @@
+.cache/
+*.swp
+*.pyc
+__pycache__
+dist/
+*.egg-info/
+build/
+.idea/
+.mypy_cache/
+/.tox/
+.venv/

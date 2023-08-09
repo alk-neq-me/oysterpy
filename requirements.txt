@@ -1,0 +1,1 @@
+-e git+ssh://git@github.com/alk-neq-me/oysterpy.git@7a55db3941dc0008e63ceb9483695e5dc81f1d0f#egg=oysterpy

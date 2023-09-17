@@ -1,7 +1,7 @@
 import unittest
 from oysterpy.exceptions import UnwrapException
 
-from oysterpy.oyster import Err, Ok, Result
+from oysterpy.oyster import Err, Ok, Result, as_result
 
 
 class TestResult(unittest.TestCase):
@@ -21,3 +21,46 @@ class TestResult(unittest.TestCase):
         self.assertRaises(UnwrapException, Err(23).unwrap)
         self.assertRaises(UnwrapException, Ok(23).unwrap_err)
         self.assertEqual(23, Err(23).unwrap_err())
+
+    def test_custom_error_enum(self):
+        from enum import Enum
+
+        class ErrorKind(str, Enum):
+            NotFound = "ErrorKind@NotFound"
+
+        self.assertEqual("ErrorKind@NotFound", Err(ErrorKind.NotFound).unwrap_err())
+
+    def test_as_result_hof(self):
+        arr = ["apple", "cherry", "banana"]
+
+        class NotFound(Exception):
+            """not found error"""
+
+        def unsafe_find(x: str) -> str:
+            for i in arr:
+                if i == x:
+                    return i
+            raise NotFound("404 key")
+
+        self.assertEqual(as_result(unsafe_find)("apple").unwrap(), "apple")
+
+    def test_as_result_decorator(self):
+        arr = ["apple", "cherry", "banana"]
+
+        class NotFound(Exception):
+            """not found error"""
+
+        @as_result
+        def unsafe_find(x: str) -> str:
+            for i in arr:
+                if i == x:
+                    return i
+            raise NotFound("404 key")
+
+        self.assertEqual(unsafe_find("apple").unwrap(), "apple")
+
+    def test_in_line_as_result(self):
+        arr = ["apple", "cherry", "banana"]
+        result = as_result(lambda e: next(e))((i for i in arr if i == "apple"))
+
+        self.assertEqual(result.unwrap(), "apple")

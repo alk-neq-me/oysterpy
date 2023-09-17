@@ -198,7 +198,6 @@ class None_(OptionImpl[V]):
 
 Option: TypeAlias = Union[Some[V], None_[V]]
 
-
 # -------------------- Result --------------------
 
 
@@ -403,12 +402,24 @@ Result: TypeAlias = Union[Ok[T, E], Err[T, E]]
 
 
 ReturnType = TypeVar("ReturnType")
+
 def as_result(fn: Callable[..., ReturnType]) -> Callable[..., Result[ReturnType, str]]:
     @functools.wraps(fn)
     def wrapper(*args, **kwargs) -> Result[ReturnType, str]:
         try:
             func = fn(*args, **kwargs)
             return Ok(func)
+        except StopIteration:
+            return Err("StopIteration")
         except Exception as e:
             return Err(str(e))
+    return wrapper
+
+def as_option(fn: Callable[..., ReturnType]) -> Callable[..., Option[ReturnType]]:
+    @functools.wraps(fn)
+    def wrapper(*args, **kwargs) -> Option[ReturnType]:
+        func = fn(*args, **kwargs)
+        if func is None:
+            return None_[ReturnType]()
+        return Some[ReturnType](func)
     return wrapper

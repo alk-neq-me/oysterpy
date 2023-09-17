@@ -5,6 +5,7 @@ from typing import Callable, Generic, Literal, TypeAlias, TypeVar, Union
 
 from oysterpy.exceptions import ExpectException, UnreachableException, UnwrapException
 
+import functools
 
 
 def unwrap_failed(msg: str, error) -> Exception:
@@ -399,3 +400,15 @@ class Err(ResultImpl[T, E]):
 
 
 Result: TypeAlias = Union[Ok[T, E], Err[T, E]]
+
+
+ReturnType = TypeVar("ReturnType")
+def as_result(fn: Callable[..., ReturnType]) -> Callable[..., Result[ReturnType, str]]:
+    @functools.wraps(fn)
+    def wrapper(*args, **kwargs) -> Result[ReturnType, str]:
+        try:
+            func = fn(*args, **kwargs)
+            return Ok(func)
+        except Exception as e:
+            return Err(str(e))
+    return wrapper

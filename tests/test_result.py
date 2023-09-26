@@ -57,7 +57,9 @@ class TestResult(unittest.TestCase):
                     return i
             raise NotFound("404 key")
 
-        self.assertEqual(unsafe_find("apple").unwrap(), "apple")
+        safe_error: Result[str, str] = unsafe_find("apple")
+
+        self.assertEqual(safe_error.unwrap(), "apple")
 
     def test_in_line_as_result(self):
         arr = ["apple", "cherry", "banana"]

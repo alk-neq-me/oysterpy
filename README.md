@@ -43,6 +43,25 @@ else:
     print("Error:", result.unwrap_err())
 ```
 
+#### as_result - decorator
+
+```python
+from oysterpy.oyster import as_result
+
+@as_result
+def unsafe_error() -> int:
+    if True:
+        raise Exception("Thrown Error")
+    return 12
+
+unsafe_error()  # // Err(_type='err', value='Thrown Error')
+
+safed_error: Result[int, str] = unsafe_error()
+
+if safed_error.is_ok():
+    print(safe_error().unwrap())
+```
+
 ### Option
 
 The Option type represents an optional value that can be either `Some(value)` or `None`. It provides a safer alternative to handling nullable values by explicitly distinguishing between the presence and absence of a value.

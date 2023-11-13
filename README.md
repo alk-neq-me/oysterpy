@@ -2,7 +2,7 @@
 
 ![Python Version](https://img.shields.io/badge/Python-%3E%3D%203.10.6-blue)
 ![Oysterpy Version](https://img.shields.io/badge/Oysterpy-1.0.0-brightgreen)
-![License](https://img.shields.io/github/license/alk-neq-me/oysterpy)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/alk-neq-me/fortipass/blob/main/LICENSE)
 
 
 A Python library providing Result and Option types inspired by the Rust programming language.
@@ -121,7 +121,7 @@ process_option(None_())  # Output: No value
 
 ## Contributing
 
-Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request on the [GitHub repository](https://github.com/alk-neq-me/oyster).
+Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request on the [GitHub repository](https://github.com/alk-neq-me/oysterpy).
 
 
 ## API Documentation
